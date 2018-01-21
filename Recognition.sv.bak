@@ -1,0 +1,82 @@
+module Recognition(
+	input i_clk,
+	input i_rst,
+	input [3:0] new_x,
+	input [2:0] new_y,
+	input read_data_valid,
+	input [3:0] start_pointx0,
+	input [2:0] start_pointy0,
+	input [3:0] end_pointx0,
+	input [2:0] end_pointy0,
+	input [3:0] start_pointx1,
+	input [2:0] start_pointy1,
+	input [3:0] end_pointx1,
+	input [2:0] end_pointy1,
+	output ready,
+	output[3:0] result
+);
+
+logic [3:0] x_distance;
+logic [2:0] y_distance;
+logic [1:0] nb_point_w, nb_point_r;
+logic ready_w;
+logic [3:0] result_w, result_r;
+logic [5:0] temp;
+assign temp = start_pointx1 + start_pointy1 + end_pointx1 + end_pointy1;
+assign result = result_r;
+assign x_distance = (temp == 6'b000000)? (start_pointx0 - end_pointx0) : (start_pointx0 - start_pointx1);
+assign y_distance = (temp == 6'b000000)? (start_pointy0 - end_pointy0) : (start_pointy0 - start_pointy1);
+always_comb begin
+	if(read_data_valid)begin
+		if(temp == 6'b000000)begin
+			//x_distance = start_pointx0 - end_pointx0;
+			//y_distance = start_pointy0 - end_pointy0;
+			if(x_distance <= 1 & x_distance >= -1 & y_distance <= 1 & y_distance >= -1)begin
+				nb_point_w = 2'b00;//1
+				ready_w = 1;
+			end
+			else begin
+				nb_point_w = 2'b01;//2
+				ready_w = 1;
+			end
+		end
+		else begin
+			//x_distance = start_pointx0 - start_pointx1;
+			//y_distance = start_pointy0 - start_pointy1;
+			if(x_distance <= 1 & x_distance >= -1 & y_distance <= 1 & y_distance >= -1)begin
+				nb_point_w = 2'b10;//3 
+				ready_w = 1;
+			end
+			else begin
+				nb_point_w = 2'b11;//4
+				ready_w = 1;
+			end
+		end
+	end
+	else begin
+		nb_point_w = 2'b00;
+		ready_w = 0;
+	end
+end
+always_comb begin
+	case(nb_point_r)
+		2'b00:result_w = 4'h0;
+		2'b01:result_w = 4'h1;
+		2'b10:result_w = 4'h5;
+		2'b11:result_w = 4'h4;
+	endcase
+end
+
+always_ff@(posedge i_clk or negedge i_rst)begin
+	if(!i_rst)begin
+		nb_point_r <= 0;
+		ready <= 0;
+		result_r <= 0;
+	end
+	else begin
+		nb_point_r <= nb_point_w;
+		ready <= ready_w;
+		result_r <= result_w;
+	end
+end
+endmodule

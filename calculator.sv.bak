@@ -1,0 +1,13 @@
+module calculator(
+	input i_clk,
+	input i_rst,
+	input numberrdy,
+	input changenumber,
+	input i_start,
+	input [3:0] operation,
+	input [3:0] number,
+	output [4:0] ans0,
+	output [4:0] ans10,
+	output [4:0] ans100,
+	output [4:0] ans1000
+)

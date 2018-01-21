@@ -1,0 +1,31 @@
+module s2int(
+
+);
+parameter D0 = 7'b1000000;
+	parameter D1 = 7'b1111001;
+	parameter D2 = 7'b0100100;
+	parameter D3 = 7'b0110000;
+	parameter D4 = 7'b0011001;
+	parameter D5 = 7'b0010010;
+	parameter D6 = 7'b0000010;
+	parameter D7 = 7'b1011000;
+	parameter D8 = 7'b0000000;
+	parameter D9 = 7'b0010000;
+	parameter DA = 7'b0010000;
+	parameter DB = 7'b1100000;
+	parameter DC = 7'b0110001;
+	parameter DD = 7'b1000010;
+	parameter DE = 7'b0110000;
+	parameter DF = 7'b0111000;
+	logic [6:0] x0;
+	logic [6:0] x1;
+	logic [6:0] x2;
+	logic [6:0] y0;
+	logic [6:0] y1;
+	logic [6:0] y2;
+	logic[3:0] container_x_0;
+	logic[3:0] container_x_1;
+	logic[3:0] container_x_2;
+	logic[3:0] container_y_0;
+	logic[3:0] container_y_1;
+	logic[3:0] container_y_2;
